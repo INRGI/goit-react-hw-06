@@ -2,10 +2,11 @@ import { Formik, Field } from 'formik';
 import { ErrorMessage } from "formik";
 import { nanoid } from 'nanoid';
 import * as Yup from "yup";
-import PropTypes from 'prop-types';
 import { Button, Container, FormBlock, Input, Label } from './ContactForm.styled';
 import Error from '../Error/Error';
 import { ToastContainer } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { addContact } from '../../redux/contactsSlice';
 
 const initialValues = {
   name: "",
@@ -17,15 +18,14 @@ const FeedbackSchema = Yup.object().shape({
     number: Yup.string().min(3, "Too Short!").max(50, "Too Long!").required("Required")
 });
 
-const ContactForm = ({onSubmit}) => {
+const ContactForm = () => {
     const nameId = nanoid();
     const numberId = nanoid();
+    const dispatch = useDispatch();
 
 
-    const handleSubmit = (values, actions) => {
-        console.log(values);
-        onSubmit(values);
-        
+    const handleSubmit = (actions) => {
+        dispatch(addContact(actions.target.value));
         actions.resetForm();
     };
 
@@ -51,8 +51,5 @@ const ContactForm = ({onSubmit}) => {
     );
 };
 
-ContactForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-};
 
 export default ContactForm;

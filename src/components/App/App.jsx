@@ -1,44 +1,19 @@
+import { useSelector } from "react-redux";
 import ContactForm from "../ContactForm";
 import ContactList from "../ContactList";
 import Filter from "../Filter";
-import { nanoid } from "nanoid";
-import { useEffect, useState } from "react";
 import { ContactTitle, Container, EmptyTitle, PhoneTitle } from "./App.styled";
+import { getContacts } from "../../redux/selectors";
 
 
 const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    return JSON.parse(window.localStorage.getItem('contacts')) ?? [];
-  });
-
-  
-  useEffect(() => {
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-  
-  const addContact = contact => {
-
-    const isContact = contacts.some(
-      ({name})=> name.toLowerCase() === contact.name.toLowerCase()
-    );
-
-    if (isContact) {
-      alert(`${contact.name} is already in contacts`)
-      return;
-    }
-
-    setContacts(prevContacts => [
-      ...prevContacts,
-      { id: nanoid(), ...contact},
-    ]);
-  };
-
+  const contacts = useSelector(getContacts);
 
 
   return (
       <Container>
         <PhoneTitle>Phonebook</PhoneTitle>
-        <ContactForm onSubmit={addContact} />
+        <ContactForm />
 
         <ContactTitle>Contacts</ContactTitle>
         {contacts.length > 0 ? (

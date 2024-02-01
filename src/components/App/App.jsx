@@ -11,7 +11,6 @@ const App = () => {
     return JSON.parse(window.localStorage.getItem('contacts')) ?? [];
   });
 
-  const [filter, setFilter] = useState('');
   
   useEffect(() => {
     window.localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -34,9 +33,6 @@ const App = () => {
     ]);
   };
 
-  const filterChange = event => {
-    setFilter(event.target.value.trim());
-  };
 
 
   return (
@@ -46,7 +42,7 @@ const App = () => {
 
         <ContactTitle>Contacts</ContactTitle>
         {contacts.length > 0 ? (
-        <Filter value={filter} onFilterChange={filterChange}/>
+        <Filter />
         ) : (
           <EmptyTitle>Your phonebook is empty.</EmptyTitle>
         )}

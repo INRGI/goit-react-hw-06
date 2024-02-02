@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -16,9 +15,5 @@ const Error = ({ msg }) => {
 
   return null;
 };
-
-Error.propTypes = {
-    msg: PropTypes.string.isRequired,
-}
 
 export default Error;

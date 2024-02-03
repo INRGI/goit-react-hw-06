@@ -4,9 +4,12 @@ import { nanoid } from 'nanoid';
 import * as Yup from "yup";
 import { Button, Container, FormBlock, Input, Label } from './ContactForm.styled';
 import Error from '../Error/Error';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from '../../redux/contactsSlice';
+import { getContacts } from '../../redux/selectors';
 
 const initialValues = {
   name: "",
@@ -22,9 +25,28 @@ const ContactForm = () => {
     const nameId = nanoid();
     const numberId = nanoid();
     const dispatch = useDispatch();
-
+    const contacts = useSelector(getContacts);
 
     const handleSubmit = (values, actions) => {
+        const isContact = contacts.some(
+            ({ name }) => name.toLowerCase() === values.name.toLowerCase()
+        );
+
+        if (isContact) {
+            toast.error(`${values.name} already in contacts!`, {
+                position: "top-right",
+                autoClose: 2500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
+        }
+
+
         dispatch(addContact(values));
         actions.resetForm();
     };
